@@ -4,205 +4,353 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Supercharger AI</title>
+    <link rel="icon" type="image\png" href="favicon.png">
     <style>
+        /* --- Color Palette & Variables --- */
         :root {
-            --primary: #6c5ce7;
-            --secondary: #a29bfe;
-            --dark: #2d3436;
-            --light: #f5f6fa;
-            --success: #00b894;
+            --primary: #6c5ce7; /* Vibrant purple */
+            --primary-dark: #5847d3;
+            --secondary: #a29bfe; /* Lighter purple */
+            --dark: #2d3436; /* Dark gray */
+            --medium-gray: #636e72;
+            --light-gray: #dfe6e9;
+            --very-light-gray: #f8f9fa;
+            --light: #ffffff; /* White */
+            --success: #00b894; /* Teal */
+            --success-dark: #00a082;
+            --border-color: #e1e4e8;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --shadow-hover-color: rgba(0, 0, 0, 0.15);
+            --code-bg: #f6f8fa; /* Light background for code */
+            --code-text: #24292e; /* Dark text for code */
         }
-        
+
+        /* --- Base Styles --- */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
-            background: #f9f9f9;
+            /* Subtle gradient background for the whole page */
+            background: linear-gradient(135deg, var(--very-light-gray) 0%, #eef2f7 100%);
             margin: 0;
             padding: 20px;
+            color: var(--dark);
+            display: flex; /* Center container vertically */
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Ensure body takes full viewport height */
         }
-        
+
+        /* --- Main Container --- */
         .container {
+            width: 100%; /* Use full width up to max-width */
             max-width: 800px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            background: var(--light);
+            border-radius: 12px; /* Slightly larger radius */
+            /* Softer, more diffused shadow */
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
             overflow: hidden;
-            height: 90vh;
+            height: 90vh; /* Maintain viewport height constraint */
             display: flex;
             flex-direction: column;
+            border: 1px solid var(--border-color); /* Subtle border */
         }
-        
+
+        /* --- Header --- */
         header {
             background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 15px;
+            color: var(--light);
+            padding: 18px 20px; /* Slightly more padding */
             text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow below header */
+            z-index: 10; /* Ensure header shadow is above chat */
         }
-        
+        header h1 {
+             margin: 0 0 5px 0; /* Adjust spacing */
+             font-size: 1.5em;
+             font-weight: 600;
+        }
+        header p {
+            margin: 0;
+            font-size: 0.9em;
+            opacity: 0.9; /* Make subtitle slightly less prominent */
+        }
+
+        /* --- Chat Box & Messages --- */
         .chat-box {
             flex: 1;
-            overflow-y: auto;
-            padding: 20px;
+            overflow-y: auto; /* Enable scrolling */
+            padding: 25px; /* Increased padding */
+            background-color: var(--very-light-gray); /* Slightly off-white background */
+            scroll-behavior: smooth; /* Smooth scrolling */
         }
-        
+
+        /* --- Scrollbar Styling (WebKit Browsers) --- */
+        .chat-box::-webkit-scrollbar {
+            width: 8px;
+        }
+        .chat-box::-webkit-scrollbar-track {
+            background: var(--light-gray);
+            border-radius: 10px;
+        }
+        .chat-box::-webkit-scrollbar-thumb {
+            background-color: var(--secondary);
+            border-radius: 10px;
+            border: 2px solid var(--light-gray);
+        }
+        .chat-box::-webkit-scrollbar-thumb:hover {
+            background-color: var(--primary);
+        }
+
         .message {
-            margin-bottom: 15px;
-            padding: 12px 16px;
-            border-radius: 8px;
-            max-width: 80%;
-            animation: fadeIn 0.3s ease;
+            margin-bottom: 18px; /* Increased spacing */
+            padding: 12px 18px; /* Adjusted padding */
+            border-radius: 18px; /* More rounded bubbles */
+            max-width: 85%; /* Allow slightly wider messages */
+            box-shadow: 0 2px 4px var(--shadow-color); /* Subtle shadow on messages */
+            position: relative; /* Needed for potential future pseudo-elements like tails */
+            animation: fadeIn 0.4s ease-out; /* Slightly slower, smoother animation */
+            word-wrap: break-word; /* Ensure long words break */
         }
-        
+
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        
+
         .user-message {
-            background: var(--primary);
-            color: white;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--light);
             margin-left: auto;
+            /* Slightly different rounding for visual distinction */
+            border-bottom-right-radius: 6px;
         }
-        
+
         .bot-message {
-            background: white;
-            border: 1px solid #eee;
+            background: var(--light);
+            color: var(--dark);
+            border: 1px solid var(--border-color);
             margin-right: auto;
+            /* Slightly different rounding for visual distinction */
+            border-bottom-left-radius: 6px;
         }
-        
+
+        .bot-message ul {
+            padding-left: 20px;
+            margin-top: 8px;
+            margin-bottom: 5px;
+            color: var(--medium-gray);
+        }
+        .bot-message li {
+            margin-bottom: 5px;
+        }
+
         .bot-message img {
             max-width: 100%;
-            border-radius: 8px;
-            margin-top: 10px;
+            border-radius: 10px; /* Match container radius */
+            margin-top: 12px;
             display: block;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 2px 5px var(--shadow-color);
         }
-        
+
         audio {
             width: 100%;
-            margin-top: 10px;
+            margin-top: 12px;
+            /* Consider styling the audio player further if possible/needed */
         }
-        
-        /* Code Block Styles */
+
+        /* --- Code Block Styles --- */
         .code-container {
             position: relative;
             margin: 15px 0;
-            background: white;
-            border-radius: 6px;
-            border: 1px solid #e1e4e8;
+            background: var(--code-bg); /* Use variable */
+            border-radius: 8px; /* Consistent radius */
+            border: 1px solid var(--border-color);
             overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
-        
+
         .code-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 6px 10px;
-            background: #f6f8fa;
-            border-bottom: 1px solid #e1e4e8;
-            font-size: 13px;
-            color: #586069;
+            padding: 8px 12px; /* Adjusted padding */
+            background: #eef1f4; /* Slightly different header background */
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.85em; /* Smaller font size */
+            color: var(--medium-gray);
         }
-        
+
         .language-label {
-            font-family: monospace;
+            font-family: 'SF Mono', 'Consolas', 'Courier New', monospace;
+            font-weight: 600;
+            text-transform: uppercase; /* Make language stand out */
         }
-        
+
         .copy-button {
-            background: none;
-            border: none;
-            color: #586069;
+            background: var(--light-gray);
+            border: 1px solid var(--border-color);
+            color: var(--medium-gray);
             cursor: pointer;
-            font-size: 12px;
-            padding: 2px 6px;
-            border-radius: 3px;
+            font-size: 0.8em;
+            padding: 4px 8px; /* Adjusted padding */
+            border-radius: 5px;
+            transition: background-color 0.2s ease, color 0.2s ease; /* Smooth transitions */
         }
-        
+
         .copy-button:hover {
-            background: #e1e4e8;
+            background: var(--secondary);
+            color: var(--light);
+            border-color: var(--primary);
         }
-        
+
         .copy-button.copied {
             background: var(--success);
+            border-color: var(--success-dark);
             color: white;
         }
-        
+
         .code-content {
-            padding: 12px;
-            font-family: 'Courier New', Courier, monospace;
+            padding: 15px; /* More padding */
+            font-family: 'SF Mono', 'Consolas', 'Courier New', monospace; /* Common monospaced fonts */
             white-space: pre;
             overflow-x: auto;
-            background: white;
-            color: #24292e;
+            background: var(--light); /* White background for code content */
+            color: var(--code-text);
             margin: 0;
             line-height: 1.5;
+            font-size: 0.9em;
         }
-        
+
+        /* --- Input Area --- */
         .input-area {
             display: flex;
-            padding: 15px;
-            border-top: 1px solid #eee;
-            background: white;
+            align-items: center; /* Vertically align items */
+            padding: 15px 20px; /* Adjusted padding */
+            border-top: 1px solid var(--border-color);
+            background: var(--light);
+            box-shadow: 0 -2px 5px rgba(0,0,0,0.05); /* Subtle shadow above input */
         }
-        
+
         #userInput {
             flex: 1;
-            padding: 10px 15px;
-            border: 1px solid #ddd;
-            border-radius: 20px;
-            font-size: 16px;
+            padding: 12px 18px; /* Increased padding */
+            border: 1px solid var(--light-gray);
+            border-radius: 25px; /* Fully rounded */
+            font-size: 1rem; /* Ensure readable font size */
+            outline: none; /* Remove default outline */
+            transition: border-color 0.2s ease, box-shadow 0.2s ease; /* Smooth transitions */
         }
-        
+
+        #userInput:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2); /* Focus ring */
+        }
+
         #sendButton {
-            background: var(--primary);
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
             border: none;
-            border-radius: 20px;
-            padding: 0 20px;
+            border-radius: 25px; /* Fully rounded */
+            padding: 12px 25px; /* Adjusted padding */
             margin-left: 10px;
             cursor: pointer;
+            font-size: 1rem; /* Match input font size */
+            font-weight: 600; /* Bolder text */
+            transition: background 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease; /* Smooth transitions */
+            box-shadow: 0 2px 5px var(--shadow-color);
         }
-        
+
+        #sendButton:hover {
+            /* Slightly lighter on hover */
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            box-shadow: 0 4px 8px var(--shadow-hover-color);
+        }
+
+        #sendButton:active {
+            transform: scale(0.98); /* Slight shrink on click */
+            box-shadow: 0 1px 3px var(--shadow-color);
+        }
+
+        /* --- Typing Indicator --- */
         .typing-indicator {
-            display: none;
+            display: none; /* Initially hidden */
             padding: 10px 15px;
-            background: white;
-            border-radius: 18px;
-            margin-bottom: 15px;
+            background: var(--light); /* Match bot message background */
+            border: 1px solid var(--border-color); /* Match bot message border */
+            border-radius: 18px; /* Match message bubble radius */
+            margin-left: 25px; /* Align with bot messages */
+            margin-bottom: 18px;
             width: fit-content;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 4px var(--shadow-color); /* Match message shadow */
         }
-        
+
         .typing-dots {
             display: flex;
-            gap: 5px;
+            gap: 6px; /* Increased gap */
         }
-        
+
         .typing-dot {
-            width: 8px;
-            height: 8px;
-            background-color: #ccc;
+            width: 9px; /* Slightly larger dots */
+            height: 9px;
+            background-color: var(--medium-gray); /* Use theme color */
             border-radius: 50%;
             animation: typingAnimation 1.4s infinite ease-in-out;
         }
-        
+
+        /* Animation delays remain the same */
         .typing-dot:nth-child(1) { animation-delay: 0s; }
         .typing-dot:nth-child(2) { animation-delay: 0.2s; }
         .typing-dot:nth-child(3) { animation-delay: 0.4s; }
-        
+
         @keyframes typingAnimation {
-            0%, 60%, 100% { transform: translateY(0); }
-            30% { transform: translateY(-5px); }
+            0%, 60%, 100% { transform: translateY(0); background-color: var(--medium-gray); }
+            30% { transform: translateY(-6px); background-color: var(--primary); } /* Jump higher and change color */
         }
+
+        /* --- Accessibility & Small Tweaks --- */
+        button:focus, input:focus {
+            outline: none; /* Handled by box-shadow */
+        }
+
+        /* Add basic responsive adjustment */
+        @media (max-width: 600px) {
+            body {
+                padding: 0; /* Remove body padding on small screens */
+                align-items: flex-start; /* Align container to top */
+            }
+            .container {
+                height: 100vh; /* Full height on mobile */
+                border-radius: 0; /* No radius on mobile */
+                border: none; /* No border on mobile */
+                box-shadow: none; /* No shadow on mobile */
+            }
+            .chat-box {
+                padding: 15px; /* Reduce padding */
+            }
+            .message {
+                max-width: 90%; /* Allow messages to be a bit wider */
+            }
+            .input-area {
+                padding: 10px 15px; /* Reduce padding */
+            }
+            #userInput {
+                padding: 10px 15px;
+            }
+            #sendButton {
+                padding: 10px 20px;
+            }
+        }
+
     </style>
 </head>
 <body>
     <div class="container">
         <header>
             <h1>Supercharger AI</h1>
-            <p>Ask anything!....</p>
+            <p>Ask anything....!</p>
         </header>
-        
+
         <div class="chat-box" id="chatBox">
             <div class="message bot-message">
                 Welcome! I can help you with:
@@ -214,7 +362,7 @@
                 </ul>
             </div>
         </div>
-        
+
         <div class="typing-indicator" id="typingIndicator">
             <div class="typing-dots">
                 <div class="typing-dot"></div>
@@ -222,7 +370,7 @@
                 <div class="typing-dot"></div>
             </div>
         </div>
-        
+
         <div class="input-area">
             <input type="text" id="userInput" placeholder="Type your request..." autocomplete="off">
             <button id="sendButton">Send</button>
@@ -234,269 +382,408 @@
         const userInput = document.getElementById('userInput');
         const sendButton = document.getElementById('sendButton');
         const typingIndicator = document.getElementById('typingIndicator');
-        
+
         // Available voices for TTS
         const voices = ['alloy', 'echo', 'fable', 'onyx', 'nova', 'shimmer'];
-        
+
         // Function to create a code block
         function createCodeBlock(code, language = '') {
             const codeId = 'code-' + Math.random().toString(36).substr(2, 8);
-            
+
             const codeContainer = document.createElement('div');
             codeContainer.className = 'code-container';
-            
+
             const header = document.createElement('div');
             header.className = 'code-header';
-            
+
             const languageSpan = document.createElement('span');
             languageSpan.className = 'language-label';
             languageSpan.textContent = language || 'code';
-            
+
             const copyButton = document.createElement('button');
             copyButton.className = 'copy-button';
             copyButton.textContent = 'Copy';
-            copyButton.onclick = () => copyCode(codeId);
-            
+            copyButton.onclick = () => copyCode(codeId, copyButton); // Pass button itself
+
             header.appendChild(languageSpan);
             header.appendChild(copyButton);
-            
+
             const content = document.createElement('pre');
             content.className = 'code-content';
             content.id = codeId;
-            content.textContent = code;
-            
+            content.textContent = code; // Use textContent to preserve formatting
+
             codeContainer.appendChild(header);
             codeContainer.appendChild(content);
-            
+
             return codeContainer;
         }
-        
-        // Function to copy code to clipboard
-        function copyCode(elementId) {
+
+        // Updated Function to copy code to clipboard
+        function copyCode(elementId, buttonElement) {
             const codeElement = document.getElementById(elementId);
             const codeText = codeElement.textContent;
-            
+
             navigator.clipboard.writeText(codeText).then(() => {
-                const button = codeElement.previousElementSibling.querySelector('.copy-button');
-                button.textContent = 'Copied!';
-                button.classList.add('copied');
+                // Use the passed button element directly
+                buttonElement.textContent = 'Copied!';
+                buttonElement.classList.add('copied');
                 setTimeout(() => {
-                    button.textContent = 'Copy';
-                    button.classList.remove('copied');
+                    buttonElement.textContent = 'Copy';
+                    buttonElement.classList.remove('copied');
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+                // Optionally provide user feedback about the failure
+                buttonElement.textContent = 'Error';
+                 setTimeout(() => {
+                    buttonElement.textContent = 'Copy';
                 }, 2000);
             });
         }
-        
+
+
         // Function to add a message to the chat
         function addMessage(content, isUser = false) {
             const messageDiv = document.createElement('div');
             messageDiv.className = isUser ? 'message user-message' : 'message bot-message';
-            
+
             if (!isUser && typeof content === 'string' && content.includes('```')) {
-                // Process markdown with code blocks
-                const parts = content.split('```');
-                parts.forEach((part, index) => {
-                    if (index % 2 === 0) {
-                        // Regular text
+                 // Process markdown with code blocks more robustly
+                const parts = content.split(/(```[\s\S]*?```)/g); // Split by code blocks, keeping delimiters
+                parts.forEach((part) => {
+                    if (part.startsWith('```') && part.endsWith('```')) {
+                        // Code block part
+                        let codeContent = part.substring(3, part.length - 3); // Remove ``` delimiters
+                        let language = '';
+                        const firstLineBreak = codeContent.indexOf('\n');
+
+                        if (firstLineBreak !== -1) {
+                            const firstLine = codeContent.substring(0, firstLineBreak).trim();
+                            // Basic check if the first line looks like a language identifier
+                            if (firstLine.length > 0 && !firstLine.includes(' ')) {
+                                language = firstLine;
+                                codeContent = codeContent.substring(firstLineBreak + 1);
+                            }
+                        }
+
+                        const codeBlock = createCodeBlock(codeContent.trim(), language);
+                        messageDiv.appendChild(codeBlock);
+                    } else if (part.trim()) {
+                        // Regular text part, create text node only if not empty
                         const textNode = document.createTextNode(part);
                         messageDiv.appendChild(textNode);
-                    } else {
-                        // Code block
-                        const firstLineBreak = part.indexOf('\n');
-                        let language = '';
-                        let code = part;
-                        
-                        if (firstLineBreak > 0) {
-                            language = part.substring(0, firstLineBreak).trim();
-                            code = part.substring(firstLineBreak + 1);
-                        }
-                        
-                        const codeBlock = createCodeBlock(code, language);
-                        messageDiv.appendChild(codeBlock);
                     }
                 });
-            } else if (!isUser && typeof content === 'object') {
+
+            } else if (!isUser && typeof content === 'object' && content !== null) {
                 // Handle special content types (image, audio)
                 if (content.type === 'image') {
+                    const textNode = document.createTextNode(content.text + ' '); // Add space after text
+                    messageDiv.appendChild(textNode);
                     const img = document.createElement('img');
                     img.src = content.url;
                     img.alt = content.prompt;
-                    messageDiv.appendChild(document.createTextNode(content.text));
+                    img.onerror = () => { // Add basic error handling for images
+                        img.alt = `Failed to load image: ${content.prompt}`;
+                        img.style.display = 'none'; // Hide broken image icon
+                        messageDiv.appendChild(document.createTextNode(` [Image failed to load: ${content.prompt}]`));
+                    };
                     messageDiv.appendChild(img);
                 } else if (content.type === 'audio') {
+                     const textNode = document.createTextNode(content.text + ' '); // Add space after text
+                    messageDiv.appendChild(textNode);
                     const audio = document.createElement('audio');
                     audio.controls = true;
                     audio.src = content.url;
-                    messageDiv.appendChild(document.createTextNode(content.text));
+                    // Add basic error handling for audio
+                    audio.onerror = () => {
+                         messageDiv.appendChild(document.createTextNode(` [Audio failed to load]`));
+                         audio.style.display = 'none';
+                    };
                     messageDiv.appendChild(audio);
+                } else {
+                     // Handle potential other object types or default to string conversion
+                     messageDiv.textContent = String(content);
                 }
             } else {
-                // Regular text message
+                // Regular text message (user or simple bot message)
                 messageDiv.textContent = content;
             }
-            
+
             chatBox.appendChild(messageDiv);
-            chatBox.scrollTop = chatBox.scrollHeight;
+            // Scroll to bottom smoothly
+            chatBox.scrollTo({ top: chatBox.scrollHeight, behavior: 'smooth' });
         }
-        
+
+
         // Function to show/hide typing indicator
         function showTyping(show) {
-            typingIndicator.style.display = show ? 'block' : 'none';
+            typingIndicator.style.display = show ? 'flex' : 'none'; // Use flex for alignment
             if (show) {
-                chatBox.scrollTop = chatBox.scrollHeight;
+                // Scroll to bottom to ensure indicator is visible
+                 chatBox.scrollTo({ top: chatBox.scrollHeight, behavior: 'smooth' });
             }
         }
-        
+
         // Function to format prompt for URLs (replace spaces with underscores)
         function formatPrompt(prompt) {
-            return prompt.trim().replace(/\s+/g, '_');
+            // Encode URI components for safer URLs, then replace spaces if needed by API
+             // Pollinations seems okay with URL encoding, which is safer than just replacing spaces.
+            return encodeURIComponent(prompt.trim());
+            // If Pollinations strictly requires underscores:
+            // return prompt.trim().replace(/\s+/g, '_');
         }
-        
-        // Function to detect user intent
-        function detectIntent(text) {
+
+        // Function to detect user intent (remains the same)
+         function detectIntent(text) {
             const lowerText = text.toLowerCase();
-            
-            if (lowerText.includes('draw') || lowerText.includes('generate') || 
+
+            // Prioritize more specific triggers first
+            if (lowerText.startsWith('say ') || lowerText.startsWith('speak ') || lowerText.includes(' voice') || lowerText.includes(' audio')) {
+                return 'tts';
+            }
+             if (lowerText.startsWith('draw ') || lowerText.startsWith('generate image ') || lowerText.startsWith('create image ') || lowerText.includes(' picture of')) {
+                return 'image';
+            }
+             if (lowerText.startsWith('search for ') || lowerText.startsWith('find ') || lowerText.startsWith('look up ') || lowerText.startsWith('web search ')) {
+                return 'search';
+            }
+             if (lowerText.includes(' code for ') || lowerText.includes(' write a function ') || lowerText.includes(' script ') || lowerText.startsWith('program ')) {
+                return 'code';
+            }
+
+            // Broader checks last
+             if (lowerText.includes('draw') || lowerText.includes('generate') ||
                 lowerText.includes('image') || lowerText.includes('picture')) {
                 return 'image';
             }
-            
-            if (lowerText.includes('search') || lowerText.startsWith('find') || 
+             if (lowerText.includes('search') || lowerText.includes('find') ||
                 lowerText.includes('look up') || lowerText.includes('web')) {
                 return 'search';
             }
-            
-            if (lowerText.includes('speak') || lowerText.includes('say') || 
-                lowerText.includes('voice') || lowerText.includes('audio')) {
-                return 'tts';
-            }
-            
-            if (lowerText.includes('code') || lowerText.includes('program') || 
+            if (lowerText.includes('code') || lowerText.includes('program') ||
                 lowerText.includes('function') || lowerText.includes('script')) {
-                return 'code';
-            }
-            
-            return 'question';
+                 return 'code';
+             }
+
+
+            return 'question'; // Default intent
         }
-        
-        // Function to extract voice from text
+
+        // Function to extract voice from text (remains the same)
         function extractVoice(text) {
             for (const voice of voices) {
-                if (text.toLowerCase().includes(voice)) {
+                if (text.toLowerCase().includes(" " + voice + " ")) { // Look for voice name surrounded by spaces
+                    return voice;
+                }
+                 if (text.toLowerCase().endsWith(" " + voice)) { // Look for voice name at the end
                     return voice;
                 }
             }
             return 'alloy'; // default voice
         }
-        
-        // Function to extract search query
+
+        // Function to extract search query (remains the same)
         function extractSearchQuery(text) {
-            const prefixes = ['search for', 'find', 'look up', 'search'];
+            const prefixes = ['search for', 'find', 'look up', 'web search', 'search']; // Added 'web search'
+            const lowerText = text.toLowerCase();
             for (const prefix of prefixes) {
-                if (text.toLowerCase().startsWith(prefix)) {
+                if (lowerText.startsWith(prefix + " ")) { // Ensure there's a space after prefix
                     return text.substring(prefix.length).trim();
                 }
             }
-            return text;
+            // If no prefix is found, maybe the intent detection was less specific,
+            // so return the original text minus generic words if necessary, or just the text.
+            // This part might need refinement based on typical user queries.
+            return text.replace(/^(search|find|look up|web)\s*/i, '').trim(); // Basic fallback removal
         }
-        
-        // Function to handle user messages
+
+       // Function to extract prompt (for image, tts, code, question)
+        function extractPrompt(text, intent) {
+            let prompt = text;
+            const lowerText = text.toLowerCase();
+
+            // Define keywords/phrases to remove based on intent
+            let keywordsToRemove = [];
+            switch (intent) {
+                case 'image':
+                    keywordsToRemove = ['draw', 'generate image', 'create image', 'generate', 'image', 'picture of', 'picture'];
+                    break;
+                case 'search':
+                    keywordsToRemove = ['search for', 'find', 'look up', 'web search', 'search'];
+                     // Keep the query as specific as possible for search
+                    return extractSearchQuery(text); // Use the specific search extractor
+                case 'tts':
+                    keywordsToRemove = ['say', 'speak', 'in a', 'voice', 'audio'];
+                    // Also remove identified voice names
+                     voices.forEach(v => keywordsToRemove.push(v));
+                    break;
+                case 'code':
+                    keywordsToRemove = ['code for', 'write a function for', 'write a function', 'program for', 'script for', 'code', 'program', 'function', 'script'];
+                    break;
+                default: // question
+                     keywordsToRemove = []; // Less removal for general questions
+            }
+
+            // Remove keywords from the beginning or end, case-insensitively
+            keywordsToRemove.forEach(keyword => {
+                const regexStart = new RegExp(`^${keyword}\\s+`, 'i');
+                const regexEnd = new RegExp(`\\s+${keyword}$`, 'i');
+                prompt = prompt.replace(regexStart, '').replace(regexEnd, '');
+                 // Handle cases like "in a [voice] voice"
+                if (intent === 'tts') {
+                     const regexMiddle = new RegExp(`\\s+${keyword}\\s+`, 'gi');
+                     prompt = prompt.replace(regexMiddle, ' ');
+                }
+            });
+
+
+            return prompt.trim();
+        }
+
+
+        // --- API Interaction ---
+        // Centralized function for Pollinations text API calls
+        async function fetchPollinationsText(endpointPath, params = {}) {
+            const baseUrl = 'https://text.pollinations.ai/';
+            const queryString = new URLSearchParams(params).toString();
+            const url = `${baseUrl}${endpointPath}${queryString ? '?' + queryString : ''}`;
+
+            console.log("Fetching:", url); // Log the URL for debugging
+
+            const response = await fetch(url);
+            if (!response.ok) {
+                // Try to get error message from response body
+                let errorText = `HTTP error! status: ${response.status}`;
+                try {
+                    const errorData = await response.text();
+                    errorText += `, Message: ${errorData}`;
+                } catch (e) {
+                    // Ignore if response body cannot be read
+                }
+                throw new Error(errorText);
+            }
+            return response.text(); // Assuming text response for most endpoints
+        }
+
+        // --- Main Handler ---
         async function handleUserMessage(message) {
             addMessage(message, true);
+            userInput.value = ''; // Clear input immediately
+            userInput.disabled = true; // Disable input during processing
+            sendButton.disabled = true; // Disable button during processing
             showTyping(true);
-            
+
             const intent = detectIntent(message);
-            
+            let prompt = extractPrompt(message, intent);
+            let formattedPrompt = formatPrompt(prompt); // URL-encode the extracted prompt
+
             try {
+                let resultText = '';
+                let resultObject = null;
+
                 switch (intent) {
                     case 'image':
-                        const imagePrompt = message.replace(/(draw|generate|create|image|picture)/gi, '').trim();
-                        const formattedImagePrompt = formatPrompt(imagePrompt);
-                        const imageUrl = `https://image.pollinations.ai/prompt/${formattedImagePrompt}?random=${Math.random()}`;
-                        
-                        setTimeout(() => {
-                            showTyping(false);
-                            addMessage({
-                                type: 'image',
-                                text: `Here's your generated image: "${imagePrompt}"`,
-                                url: imageUrl,
-                                prompt: imagePrompt
-                            });
-                        }, 1500);
+                        // Pollinations image URL uses the raw prompt format
+                        const rawImagePrompt = prompt; // Use the cleaner prompt
+                        const formattedImagePromptForUrl = rawImagePrompt.trim().replace(/\s+/g, '_'); // Specific format for this URL
+                        const imageUrl = `https://image.pollinations.ai/prompt/${formattedImagePromptForUrl}?random=${Date.now()}`; // Add timestamp for cache busting
+
+                        // Simulate processing time as the image generation isn't instant
+                         await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate network/generation time
+
+                        resultObject = {
+                            type: 'image',
+                            text: `Here's an image for: "${rawImagePrompt}"`,
+                            url: imageUrl,
+                            prompt: rawImagePrompt
+                        };
                         break;
-                        
+
                     case 'search':
-                        const searchQuery = extractSearchQuery(message);
-                        const formattedSearchQuery = formatPrompt(searchQuery);
-                        
-                        const searchResponse = await fetch(`https://text.pollinations.ai/${formattedSearchQuery}?model=searchgpt`);
-                        const searchResult = await searchResponse.text();
-                        
-                        showTyping(false);
-                        addMessage(`Search results for "${searchQuery}":\n\n${searchResult}`);
+                        const searchQuery = prompt; // Already extracted by extractPrompt/extractSearchQuery
+                         formattedPrompt = formatPrompt(searchQuery); // Ensure search query is encoded
+                        resultText = await fetchPollinationsText(formattedPrompt, { model: 'searchgpt' });
+                         resultText = `Search results for "${searchQuery}":\n\n${resultText}`;
                         break;
-                        
+
                     case 'tts':
                         const voice = extractVoice(message);
-                        const ttsText = message.replace(/(speak|say|voice|audio)/gi, '').trim();
-                        const formattedTtsText = formatPrompt(ttsText);
-                        const audioUrl = `https://text.pollinations.ai/${formattedTtsText}?model=openai-audio&voice=${voice}`;
-                        
-                        showTyping(false);
-                        addMessage({
+                        const ttsText = prompt; // Use the cleaned prompt
+                        formattedPrompt = formatPrompt(ttsText); // Encode the text for TTS
+                        // Construct URL manually as it's not just text
+                        const audioUrl = `https://text.pollinations.ai/${formattedPrompt}?model=openai-audio&voice=${voice}`;
+
+                        resultObject = {
                             type: 'audio',
-                            text: `Here's the audio (${voice} voice):`,
+                            text: `Here's the audio for "${ttsText}" (${voice} voice):`,
                             url: audioUrl
-                        });
+                        };
                         break;
-                        
+
                     case 'code':
-                        const codePrompt = message.replace(/(code|program|function|script)/gi, '').trim();
-                        const formattedCodePrompt = formatPrompt(codePrompt);
-                        
-                        const codeResponse = await fetch(`https://text.pollinations.ai/${formattedCodePrompt}?model=codex`);
-                        let codeResult = await codeResponse.text();
-                        
-                        if (!codeResult.includes('```')) {
-                            codeResult = "```\n" + codeResult + "\n```";
+                         formattedPrompt = formatPrompt(prompt); // Encode code request
+                        resultText = await fetchPollinationsText(formattedPrompt, { model: 'codex' });
+                        // Wrap in markdown if not already formatted
+                        if (!resultText.trim().startsWith('```') || !resultText.trim().endsWith('```')) {
+                            // Try to detect language or default
+                            let detectedLang = ''; // Basic detection could be added here if needed
+                            resultText = "```" + detectedLang + "\n" + resultText.trim() + "\n```";
                         }
-                        
-                        showTyping(false);
-                        addMessage(`Here's the code for "${codePrompt}":\n\n${codeResult}`);
+                        resultText = `Here's some code related to "${prompt}":\n\n${resultText}`;
                         break;
-                        
-                    default:
-                        const formattedPrompt = formatPrompt(message);
-                        const response = await fetch(`https://text.pollinations.ai/${formattedPrompt}`);
-                        const result = await response.text();
-                        
-                        showTyping(false);
-                        addMessage(result);
+
+                    default: // 'question'
+                         formattedPrompt = formatPrompt(prompt); // Encode general question
+                         // Using default model (often gpt-3.5 or similar)
+                        resultText = await fetchPollinationsText(formattedPrompt);
+                        break;
                 }
-            } catch (error) {
+
                 showTyping(false);
-                addMessage(`Sorry, I encountered an error: ${error.message}`);
+                if (resultObject) {
+                    addMessage(resultObject);
+                } else {
+                    addMessage(resultText);
+                }
+
+            } catch (error) {
+                console.error("Error handling message:", error); // Log the error
+                showTyping(false);
+                addMessage(`Sorry, I encountered an error processing your request. Please try again.\n*Details: ${error.message}*`);
+            } finally {
+                 userInput.disabled = false; // Re-enable input
+                 sendButton.disabled = false; // Re-enable button
+                 userInput.focus(); // Set focus back to input field
             }
         }
-        
+
+
         // Event listeners
         sendButton.addEventListener('click', () => {
             const message = userInput.value.trim();
-            if (message) {
-                userInput.value = '';
+            if (message && !userInput.disabled) { // Check if input is not disabled
                 handleUserMessage(message);
             }
         });
-        
+
         userInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 const message = userInput.value.trim();
-                if (message) {
-                    userInput.value = '';
+                if (message && !userInput.disabled) { // Check if input is not disabled
+                    e.preventDefault(); // Prevent default Enter behavior (like newline)
                     handleUserMessage(message);
                 }
             }
         });
+
+         // Set initial focus on the input field when the page loads
+         window.addEventListener('load', () => {
+            userInput.focus();
+         });
+
     </script>
 </body>
 </html>
+
