@@ -35,7 +35,7 @@ cd supercharger-ai-chat
 ### 2. Open Index1.html
 ```bash
 open Index1.html
-               ```
+                ```
 	No backend or server required — it’s a static frontend!
 
 ---
