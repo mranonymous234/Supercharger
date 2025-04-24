@@ -61,3 +61,10 @@ You can specify a voice for TTS:
 	•	onyx. 
 	•	nova. 
 	•	shimmer. 
+ ---
+
+#### Download latest package And Preview live Web interface
+
+You can go to the latest releases page from **[here]**(https://github.com/mranonymous234/Supercharger/releases)
+
+You can go to the live Web interface from **[here]**(https://superchargerai.netlify.app)
