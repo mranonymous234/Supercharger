@@ -30,4 +30,4 @@
 
 ```bash
 git clone https://github.com/yourusername/supercharger-ai-chat.git
-cd supercharger-ai-chat```
+cd supercharger-ai-chat ```
