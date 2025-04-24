@@ -32,3 +32,21 @@
 git clone https://github.com/yourusername/supercharger-ai-chat.git
 cd supercharger-ai-chat
 ```
+### 2. Open Index1.html
+```bash
+open Index1.html
+               ```
+	No backend or server required — it’s a static frontend!
+
+---
+
+## Usage
+
+  1.	Type your request in the input box.
+  2.	Click Send or hit Enter.
+  3.	Supported inputs include:
+        	•	draw a cat → generates an image
+	        •	say hello in a nova voice → generates audio
+          •	search for AI news → fetches search results
+	        •	code for a bubble sort → generates code
+	        •	what is quantum computing? → regular Q&A
