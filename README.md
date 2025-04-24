@@ -45,8 +45,19 @@ open Index1.html
   1.	Type your request in the input box.
   2.	Click Send or hit Enter.
   3.	Supported inputs include:
-        	•	draw a cat → generates an image. 
-	        •	say hello in a nova voice → generates audio. 
-                •	search for AI news → fetches search results. 
-	        •	code for a bubble sort → generates code. 
-	        •	what is quantum computing? → regular Q&A. 
+     •	    draw a cat → generates an image. 
+     •	    say hello in a nova voice → generates audio. 
+     •	    search for AI news → fetches search results. 
+     •	    code for a bubble sort → generates code. 
+     •	    what is quantum computing? → regular Q&A.
+
+### Voice Options
+
+You can specify a voice for TTS:
+
+	•	alloy. 
+	•	echo. 
+	•	fable. 
+	•	onyx. 
+	•	nova. 
+	•	shimmer. 
